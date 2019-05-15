@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitMain extends JavaPlugin {
     @Getter public ConfigManager configManager;
-    @Getter public Config config;
+    @Getter public Config pluginConfig;
     @Getter public Icon icon;
     @Getter public ProtocolManager protocolManager;
     @Getter public BukkitTextFormatter formatter;
@@ -29,7 +29,7 @@ public class BukkitMain extends JavaPlugin {
         getLogger().info("初始化配置文件管理器...");
         configManager = new ConfigManager(getDataFolder());
         getLogger().info("加载配置文件...");
-        config = configManager.getConfig();
+        pluginConfig = configManager.getConfig();
         getLogger().info("加载 MOTD 图标...");
         icon = configManager.getIcon();
         getLogger().info("加载 ProtocolLib ...");
@@ -95,16 +95,16 @@ public class BukkitMain extends JavaPlugin {
         }
         switch (args[0]) {
             case "smode":
-                if(getConfig().isInMaintenance()){
-                    getConfig().setInMaintenance(false);
+                if(getPluginConfig().isInMaintenance()){
+                    getPluginConfig().setInMaintenance(false);
                     getConfigManager().saveConfig();
                     sender.sendMessage(prefix+"维护模式已关闭");
                 }else{
-                    getConfig().setInMaintenance(true);
+                    getPluginConfig().setInMaintenance(true);
                     getConfigManager().saveConfig();
                     for (Player player: ReflectFactory.getPlayers()){
                         if(!(player.isOp() || player.hasPermission("colormotd.smode.join")))
-                            player.kickPlayer(getFormatter().applyPlaceHolder(getConfig().getMaintenanceModeKickMsg(),player.getAddress().getHostString() ));
+                            player.kickPlayer(getFormatter().applyPlaceHolder(getPluginConfig().getMaintenanceModeKickMsg(),player.getAddress().getHostString() ));
                     }
                     sender.sendMessage(prefix+"维护模式已开启，除服务器管理员外其他玩家将无法加入服务器，如需关闭请再输入一次指令");
                 }
@@ -115,12 +115,12 @@ public class BukkitMain extends JavaPlugin {
                 sender.sendMessage(prefix+"插件重载已完成");
                 break;
             case "underattack":
-                if(getConfig().isUnderAttack()){
-                    getConfig().setUnderAttack(false);
+                if(getPluginConfig().isUnderAttack()){
+                    getPluginConfig().setUnderAttack(false);
                     getConfigManager().saveConfig();
                     sender.sendMessage(prefix+"防御模式已关闭，MOTD已重新开放");
                 }else{
-                    getConfig().setUnderAttack(true);
+                    getPluginConfig().setUnderAttack(true);
                     getConfigManager().saveConfig();
                     sender.sendMessage(prefix+"防御模式已开启，任何人将无法看到MOTD");
                 }

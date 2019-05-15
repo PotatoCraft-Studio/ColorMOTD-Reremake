@@ -23,16 +23,16 @@ public class BungeeCommandListener extends Command {
         }
         switch (args[0]) {
             case "smode":
-                if (plugin.getConfig().isInMaintenance()) {
-                    plugin.getConfig().setInMaintenance(false);
+                if (plugin.getPluginConfig().isInMaintenance()) {
+                    plugin.getPluginConfig().setInMaintenance(false);
                     plugin.getConfigManager().saveConfig();
                     sender.sendMessage(new TextComponent(plugin.prefix + "维护模式已关闭"));
                 } else {
-                    plugin.getConfig().setInMaintenance(true);
+                    plugin.getPluginConfig().setInMaintenance(true);
                     plugin.getConfigManager().saveConfig();
                     for (ProxiedPlayer player : plugin.getProxy().getPlayers()) {
                         if (!player.hasPermission("colormotd.smode.join"))
-                            player.disconnect(new TextComponent(plugin.getFormatter().applyPlaceHolder(plugin.getConfig().getMaintenanceModeKickMsg(), player.getAddress().getHostString())));
+                            player.disconnect(new TextComponent(plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().getMaintenanceModeKickMsg(), player.getAddress().getHostString())));
                     }
                     sender.sendMessage(new TextComponent(plugin.prefix + "维护模式已开启，除服务器管理员外其他玩家将无法加入服务器，如需关闭请再输入一次指令"));
                 }
@@ -42,12 +42,12 @@ public class BungeeCommandListener extends Command {
                 sender.sendMessage(new TextComponent(plugin.prefix + "使用Bungee兼容模式对配置文件进行了热重读，部分功能可能不会重载，对BungeeCord进行重启以完整重读"));
                 break;
             case "underattack":
-                if (plugin.getConfig().isUnderAttack()) {
-                    plugin.getConfig().setUnderAttack(false);
+                if (plugin.getPluginConfig().isUnderAttack()) {
+                    plugin.getPluginConfig().setUnderAttack(false);
                     plugin.getConfigManager().saveConfig();
                     sender.sendMessage(new TextComponent(plugin.prefix + "防御模式已关闭，MOTD已重新开放"));
                 } else {
-                    plugin.getConfig().setUnderAttack(true);
+                    plugin.getPluginConfig().setUnderAttack(true);
                     plugin.getConfigManager().saveConfig();
                     sender.sendMessage(new TextComponent(plugin.prefix + "防御模式已开启，任何人将无法看到MOTD"));
                 }

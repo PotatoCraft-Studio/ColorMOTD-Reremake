@@ -16,11 +16,11 @@ public class BungeeEventListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PostLoginEvent event){
         String ip = event.getPlayer().getAddress().getHostString();
-        if(!plugin.getConfig().isInMaintenance())
+        if(!plugin.getPluginConfig().isInMaintenance())
             return;
         if(event.getPlayer().hasPermission("colormotd.smode.join"))
             return;
-        event.getPlayer().disconnect(new TextComponent(plugin.getFormatter().applyPlaceHolder(plugin.getConfig().getMaintenanceModeKickMsg(), ip)));
+        event.getPlayer().disconnect(new TextComponent(plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().getMaintenanceModeKickMsg(), ip)));
         return;
     }
 

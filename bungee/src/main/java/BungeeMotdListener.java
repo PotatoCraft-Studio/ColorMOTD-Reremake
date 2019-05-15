@@ -21,7 +21,7 @@ public class BungeeMotdListener implements Listener {
     @Getter Firewall firewall;
     public BungeeMotdListener(BungeeMain plugin){
         this.plugin=plugin;
-         firewall = new Firewall(plugin.getConfig());
+         firewall = new Firewall(plugin.getPluginConfig());
     }
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerListPing(ProxyPingEvent event){
@@ -39,25 +39,25 @@ public class BungeeMotdListener implements Listener {
         String randomMotd;
 
         // 生成 MOTD 与 Favicon
-        if(!plugin.getConfig().isInMaintenance()){ //检查是否为维护模式
-            randomMotd = plugin.getFormatter().applyPlaceHolder(plugin.getConfig().randomMotd(), ip);
+        if(!plugin.getPluginConfig().isInMaintenance()){ //检查是否为维护模式
+            randomMotd = plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().randomMotd(), ip);
             randomIcon = plugin.getIcon().randomIcon();
         }else{
-            randomMotd = plugin.getFormatter().applyPlaceHolder(plugin.getConfig().getMaintenanceModeMotd(), ip);
+            randomMotd = plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().getMaintenanceModeMotd(), ip);
             randomIcon = plugin.getIcon().getMaintenanceImage();
         }
 
         // 检查是否关闭延迟检测
-        if(!plugin.getConfig().isShowDelay()){
-            plugin.getProxy().getConfig().getPlayerLimit();
-            response.setVersion(new ServerPing.Protocol(plugin.getFormatter().applyPlaceHolder(plugin.getConfig().randomOnline(), ip), -1));
+        if(!plugin.getPluginConfig().isShowDelay()){
+            plugin.getProxy().getPluginConfig().getPlayerLimit();
+            response.setVersion(new ServerPing.Protocol(plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().randomOnline(), ip), -1));
         }
 
         // 设置playerlist
-        if(!plugin.getConfig().getPlayers().isEmpty()){
+        if(!plugin.getPluginConfig().getPlayers().isEmpty()){
             ServerPing.PlayerInfo[] playerInfos = new ServerPing.PlayerInfo[0];
             int i = 0;
-            for (String text : plugin.getConfig().getPlayers()){
+            for (String text : plugin.getPluginConfig().getPlayers()){
                 ServerPing.PlayerInfo info = new ServerPing.PlayerInfo(text, UUID.nameUUIDFromBytes(text.getBytes(StandardCharsets.UTF_8)));
                 playerInfos[i] = info;
                 i++;

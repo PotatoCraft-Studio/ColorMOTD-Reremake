@@ -9,7 +9,7 @@ public class BungeeMain extends Plugin {
     @Getter
     public ConfigManager configManager;
     @Getter
-    public Config config;
+    public Config pluginConfig;
     @Getter
     public Icon icon;
     @Getter
@@ -24,7 +24,7 @@ public class BungeeMain extends Plugin {
         getLogger().info("初始化配置文件管理器...");
         configManager = new ConfigManager(getDataFolder());
         getLogger().info("加载配置文件...");
-        config = configManager.getConfig();
+        pluginConfig = configManager.getConfig();
         getLogger().info("加载 MOTD 图标...");
         icon = configManager.getIcon();
         getLogger().info("初始化文本格式化工具...");

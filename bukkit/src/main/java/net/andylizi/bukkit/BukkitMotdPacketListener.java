@@ -53,7 +53,7 @@ public class BukkitMotdPacketListener implements PacketListener {
                 .gamePhase(GamePhase.LOGIN)
                 .options(new ListenerOptions[]{ListenerOptions.ASYNC})
                 .build();
-        firewall = new Firewall(this.plugin.getConfig());
+        firewall = new Firewall(this.plugin.getPluginConfig());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BukkitMotdPacketListener implements PacketListener {
             packetEvent.setCancelled(true);
             return;
         }
-        if(!plugin.getConfig().isShowDelay()){
+        if(!plugin.getPluginConfig().isShowDelay()){
             packetEvent.setCancelled(true);
             return;
         }
@@ -89,13 +89,13 @@ public class BukkitMotdPacketListener implements PacketListener {
 
         String randomMotd;
         BufferedImage randomIcon;
-        if(!plugin.getConfig().isInMaintenance()){//检查是否为维护状态
+        if(!plugin.getPluginConfig().isInMaintenance()){//检查是否为维护状态
             //正常模式
-            randomMotd = this.plugin.getConfig().randomMotd();
+            randomMotd = this.plugin.getPluginConfig().randomMotd();
             randomIcon = this.plugin.getIcon().randomIcon();
         }else{
             //维护模式 固定MOTD/ICON
-            randomMotd = this.plugin.getConfig().getMaintenanceModeMotd();
+            randomMotd = this.plugin.getPluginConfig().getMaintenanceModeMotd();
             randomIcon = this.plugin.getIcon().getMaintenanceImage();
         }
         //格式化文本与图像
@@ -106,14 +106,14 @@ public class BukkitMotdPacketListener implements PacketListener {
         }catch (IOException ignored){icon = null;}
 
         //设置playerlist
-        if(!plugin.getConfig().isShowDelay()){ //开启showdelay时，无法发送自定义在线信息
+        if(!plugin.getPluginConfig().isShowDelay()){ //开启showdelay时，无法发送自定义在线信息
             ping.setVersionProtocol(-1);
-            ping.setVersionName(this.plugin.getFormatter().applyPlaceHolder(plugin.getConfig().randomOnline(), ip));
+            ping.setVersionName(this.plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().randomOnline(), ip));
         }
 
-        if(!plugin.getConfig().getPlayers().isEmpty()){
+        if(!plugin.getPluginConfig().getPlayers().isEmpty()){
             List<WrappedGameProfile> profileList = new ArrayList<>();
-            for (String str : plugin.getConfig().getPlayers()) {
+            for (String str : plugin.getPluginConfig().getPlayers()) {
                 profileList.add(createGameProfile(this.plugin.getFormatter().applyPlaceHolder(str, ip)));
             }
             ping.setPlayers(ImmutableList.copyOf(profileList));
