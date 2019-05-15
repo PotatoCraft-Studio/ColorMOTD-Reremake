@@ -9,6 +9,7 @@ public class BungeeTextFormatter extends InternalPlaceHolder {
         public String applyPlaceHolder(String text,String ip){
             text = super.applyPlaceHolder(text,ip);
             text = text.replaceAll("%online%",String.valueOf(bungee.getProxy().getOnlineCount()));
+            text = text.replaceAll("%maxonline%", String.valueOf(bungee.getProxy().getConfig().getPlayerLimit()));
             text = text.replaceAll("%servers%",String.valueOf(bungee.getProxy().getServers().size()));
             return text;
         }

@@ -66,6 +66,10 @@ public class ConfigManager {
         }
     }
 
+    public void reloadConfig(){
+        readConfig();
+    }
+
     private Config readConfig() {
         File configFile = new File(dataFolder, "config.json");
         String configString = readToString(configFile.getPath());

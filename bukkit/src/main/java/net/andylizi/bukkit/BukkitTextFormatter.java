@@ -13,6 +13,7 @@ public class BukkitTextFormatter extends InternalPlaceHolder {
         text = super.applyPlaceHolder(text,ip);
         text = text.replaceAll("%tps%",String.valueOf(ReflectFactory.getPlayers().length));
         text = text.replaceAll("%online%",String.valueOf(Bukkit.getOnlinePlayers().size()));
+        text = text.replaceAll("%maxonline%", String.valueOf(Bukkit.getMaxPlayers()));
         text = text.replaceAll("%playedbefore%",String.valueOf(Bukkit.getOfflinePlayers().length));
         return text;
     }

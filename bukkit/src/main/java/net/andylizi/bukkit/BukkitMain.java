@@ -21,7 +21,7 @@ public class BukkitMain extends JavaPlugin {
     @Getter public Icon icon;
     @Getter public ProtocolManager protocolManager;
     @Getter public BukkitTextFormatter formatter;
-    final private String prefix = ChatColor.AQUA+"["+ChatColor.GOLD+"ColorMOTD"+ChatColor.AQUA+"] "+ChatColor.GREEN;
+    final public String prefix = ChatColor.AQUA+"["+ChatColor.GOLD+"ColorMOTD"+ChatColor.AQUA+"] "+ChatColor.GREEN;
     @Getter public BukkitMotdPacketListener bukkitMotdPacketListener;
     @Override
     public void onEnable() {
@@ -86,12 +86,12 @@ public class BukkitMain extends JavaPlugin {
         }
         if(!command.getName().equalsIgnoreCase("colormotd"))
             return false;
-        if(args.length == 0){
-            sender.sendMessage(prefix+"可用指令: smode underattack lsblockedip reload version");
-        }
         if(!sender.hasPermission("colormotd.admin")) {
             sender.sendMessage(prefix+ChatColor.RED+"权限不足");
             return true;
+        }
+        if(args.length == 0){
+            sender.sendMessage(prefix+"可用指令: smode underattack lsblockedip reload version");
         }
         switch (args[0]) {
             case "smode":
