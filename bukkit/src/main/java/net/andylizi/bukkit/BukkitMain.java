@@ -23,6 +23,7 @@ public class BukkitMain extends JavaPlugin {
     @Getter public BukkitTextFormatter formatter;
     final public String prefix = ChatColor.AQUA+"["+ChatColor.GOLD+"ColorMOTD"+ChatColor.AQUA+"] "+ChatColor.GREEN;
     @Getter public BukkitMotdPacketListener bukkitMotdPacketListener;
+    public boolean usePlaceHolderAPI;
     @Override
     public void onEnable() {
         getLogger().info("ColorMOTD Reremake 已加载");
@@ -58,6 +59,12 @@ public class BukkitMain extends JavaPlugin {
 
         getLogger().info("注册 Bukkit 事件监听器...");
         Bukkit.getPluginManager().registerEvents(new BukkitEventListener(this),this);
+
+        getLogger().info("检查并加载可选依赖...");
+        if(Bukkit.getPluginManager().getPlugin("PlaceHolderAPI")!=null && getPluginConfig().isUsePlaceHolderAPI()){
+            usePlaceHolderAPI=true;
+            getLogger().info("已加载可选依赖项 PlaceHolderAPI");
+        }
 
         getLogger().info("工作全部完成 OK <3");
     }

@@ -39,6 +39,9 @@ public class Config {
     @Getter
     @Setter
     private int requestLimit;
+    @Getter
+    @Setter
+    private boolean usePlaceHolderAPI;
 
     public static Config createDefaultConfig() {
         List<String> motds = new ArrayList<>();
@@ -65,9 +68,10 @@ public class Config {
         boolean inMaintenance = false;
         boolean underAttack = false;
         int requestLimit = 15;
+        boolean usePlaceHolderAPI = true;
         return new Config(motds, onlineMsgs, players, maintenanceModeMotd,
                 maintenanceModeKickMsg, tpsFormat, showDelay,
-                inMaintenance, underAttack, requestLimit);
+                inMaintenance, underAttack, requestLimit, usePlaceHolderAPI);
     }
     public String randomMotd(){
         Random random = new Random();

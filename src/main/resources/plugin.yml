@@ -14,3 +14,7 @@ commands:
     aliases: [emode]
   colormotd:
     description: 插件主命令
+softdepend:
+- PlaceholderAPI
+depend:
+- ProtocolLib
