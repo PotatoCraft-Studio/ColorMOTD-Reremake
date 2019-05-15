@@ -49,7 +49,7 @@ public class BungeeMotdListener implements Listener {
 
         // 检查是否关闭延迟检测
         if(!plugin.getPluginConfig().isShowDelay()){
-            plugin.getProxy().getPluginConfig().getPlayerLimit();
+            plugin.getProxy().getConfig().getPlayerLimit();
             response.setVersion(new ServerPing.Protocol(plugin.getFormatter().applyPlaceHolder(plugin.getPluginConfig().randomOnline(), ip), -1));
         }
 
