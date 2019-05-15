@@ -2,6 +2,7 @@ package net.andylizi.bukkit;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import lombok.Getter;
 import net.andylizi.core.Config;
 import net.andylizi.core.ConfigManager;
 import net.andylizi.core.Icon;
@@ -10,11 +11,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitMain extends JavaPlugin {
-    ConfigManager configManager;
-    Config config;
-    Icon icon;
-    ProtocolManager protocolManager;
-    BukkitTextFormatter formatter;
+    @Getter public ConfigManager configManager;
+    @Getter public Config config;
+    @Getter public Icon icon;
+    @Getter public ProtocolManager protocolManager;
+    @Getter public BukkitTextFormatter formatter;
+
     @Override
     public void onEnable() {
         getLogger().info("ColorMOTD Reremake 已加载");

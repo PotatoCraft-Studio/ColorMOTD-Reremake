@@ -3,18 +3,23 @@ package net.andylizi.bukkit;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.*;
 import com.comphenix.protocol.injector.GamePhase;
+import net.andylizi.core.Firewall;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class BukkitMotdPacketListener implements PacketListener {
     private ListeningWhitelist sendingWhitelist;
     private ListeningWhitelist receivingWhitelist;
-    private JavaPlugin plugin;
+    private BukkitMain plugin;
     private PacketType packetServerInfo;
     private PacketType pingPacketType;
+    private Firewall firewall;
 
-    public BukkitMotdPacketListener(JavaPlugin plugin){
+
+    public BukkitMotdPacketListener(BukkitMain plugin){
         this.plugin = plugin;
         try{
             packetServerInfo = ReflectFactory.getServerInfoPacketType();
@@ -40,15 +45,28 @@ public class BukkitMotdPacketListener implements PacketListener {
                 .gamePhase(GamePhase.LOGIN)
                 .options(new ListenerOptions[]{ListenerOptions.ASYNC})
                 .build();
+        firewall = new Firewall(this.plugin.getConfig());
     }
 
     @Override
     public void onPacketReceiving(PacketEvent packetEvent) {
-
+        String ip = packetEvent.getPlayer().getAddress().getHostString();
+        if(firewall.isBlocked(ip)) { //已被屏蔽IP地址直接不予回复
+            packetEvent.setCancelled(true);
+            return;
+        }
+        if(!plugin.getConfig().isShowDelay()){
+            packetEvent.setCancelled(true);
+            return;
+        }
     }
 
     @Override
     public void onPacketSending(PacketEvent packetEvent) {
+        String ip = packetEvent.getPlayer().getAddress().getHostString();
+        if(!firewall.canFlushMotd(ip)) //防火墙防刷MOTD检查
+            packetEvent.setCancelled(true);
+        //MOTD Start
 
     }
 
