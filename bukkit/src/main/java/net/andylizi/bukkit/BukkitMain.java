@@ -14,6 +14,7 @@ public class BukkitMain extends JavaPlugin {
     Config config;
     Icon icon;
     ProtocolManager protocolManager;
+    BukkitTextFormatter formatter;
     @Override
     public void onEnable() {
         getLogger().info("ColorMOTD Reremake 已加载");
@@ -40,6 +41,13 @@ public class BukkitMain extends JavaPlugin {
             this.getPluginLoader().disablePlugin(this);
             return;
         }
+        getLogger().info("初始化文本格式化工具...");
+        formatter = new BukkitTextFormatter(this);
+
+        getLogger().info("注册 ProtocolLib 事件监听器...");
+
+        protocolManager.addPacketListener(new BukkitMotdPacketListener(this));
+
 
     }
 }
