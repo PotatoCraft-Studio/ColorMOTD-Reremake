@@ -3,6 +3,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RequiredArgsConstructor(staticName = "of")
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
@@ -67,5 +68,13 @@ public class Config {
         return new Config(motds, onlineMsgs, players, maintenanceModeMotd,
                 maintenanceModeKickMsg, tpsFormat, showDelay,
                 inMaintenance, underAttack, requestLimit);
+    }
+    public String randomMotd(){
+        Random random = new Random();
+        return motds.get(random.nextInt(motds.size()));
+    }
+    public String randomOnline(){
+        Random random = new Random();
+        return onlineMsgs.get(random.nextInt(onlineMsgs.size()));
     }
 }

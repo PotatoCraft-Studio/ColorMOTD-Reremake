@@ -1,0 +1,16 @@
+name: ColorMOTD
+main: 具体这是什么我也不清楚 打完包才知道
+version: test
+authors:
+- Ghost_chu
+- andylizi
+commands:
+  smode:
+    description: 维护模式
+  cmotdr:
+    description: 重载ColorMOTD
+  underattack:
+    description: 进入应急模式，屏蔽所有MOTD
+    aliases: [emode]
+  colormotd:
+    description: 插件主命令

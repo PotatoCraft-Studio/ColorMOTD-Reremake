@@ -3,11 +3,19 @@ package net.andylizi.bukkit;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.*;
 import com.comphenix.protocol.injector.GamePhase;
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
+import com.comphenix.protocol.wrappers.WrappedServerPing;
+import com.google.common.collect.ImmutableList;
+import lombok.Getter;
 import net.andylizi.core.Firewall;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 public class BukkitMotdPacketListener implements PacketListener {
@@ -16,7 +24,7 @@ public class BukkitMotdPacketListener implements PacketListener {
     private BukkitMain plugin;
     private PacketType packetServerInfo;
     private PacketType pingPacketType;
-    private Firewall firewall;
+    @Getter  private Firewall firewall;
 
 
     public BukkitMotdPacketListener(BukkitMain plugin){
@@ -66,8 +74,55 @@ public class BukkitMotdPacketListener implements PacketListener {
         String ip = packetEvent.getPlayer().getAddress().getHostString();
         if(!firewall.canFlushMotd(ip)) //防火墙防刷MOTD检查
             packetEvent.setCancelled(true);
+
+        if (!packetEvent.getPacketType().equals(packetServerInfo))
+            return;
+
         //MOTD Start
 
+        WrappedServerPing ping = null; //数据包检查
+        try {
+            ping = packetEvent.getPacket().getServerPings().getValues().get(0);
+        } catch (IndexOutOfBoundsException ex) {
+            return;
+        }
+
+        String randomMotd;
+        BufferedImage randomIcon;
+        if(!plugin.getConfig().isInMaintenance()){//检查是否为维护状态
+            //正常模式
+            randomMotd = this.plugin.getConfig().randomMotd();
+            randomIcon = this.plugin.getIcon().randomIcon();
+        }else{
+            //维护模式 固定MOTD/ICON
+            randomMotd = this.plugin.getConfig().getMaintenanceModeMotd();
+            randomIcon = this.plugin.getIcon().getMaintenanceImage();
+        }
+        //格式化文本与图像
+        String motd = this.plugin.getFormatter().applyPlaceHolder(randomMotd, ip);
+        WrappedServerPing.CompressedImage icon;
+        try {
+            icon = WrappedServerPing.CompressedImage.fromPng(randomIcon);
+        }catch (IOException ignored){icon = null;}
+
+        //设置playerlist
+        if(!plugin.getConfig().isShowDelay()){ //开启showdelay时，无法发送自定义在线信息
+            ping.setVersionProtocol(-1);
+            ping.setVersionName(this.plugin.getFormatter().applyPlaceHolder(plugin.getConfig().randomOnline(), ip));
+        }
+
+        if(!plugin.getConfig().getPlayers().isEmpty()){
+            List<WrappedGameProfile> profileList = new ArrayList<>();
+            for (String str : plugin.getConfig().getPlayers()) {
+                profileList.add(createGameProfile(this.plugin.getFormatter().applyPlaceHolder(str, ip)));
+            }
+            ping.setPlayers(ImmutableList.copyOf(profileList));
+            ping.setPlayersVisible(true);
+        }
+        //应用
+        ping.setMotD(motd);
+        ping.setFavicon(icon);
+        packetEvent.getPacket().getServerPings().getValues().set(0, ping);
     }
 
     @Override
@@ -83,5 +138,8 @@ public class BukkitMotdPacketListener implements PacketListener {
     @Override
     public Plugin getPlugin() {
         return plugin;
+    }
+    public static WrappedGameProfile createGameProfile(String name) {
+        return new WrappedGameProfile(UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8)), name);
     }
 }

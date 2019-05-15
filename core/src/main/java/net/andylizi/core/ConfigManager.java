@@ -2,15 +2,12 @@ package net.andylizi.core;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.rmi.ConnectIOException;
 import java.util.ArrayList;
 
 public class ConfigManager {
@@ -31,6 +28,11 @@ public class ConfigManager {
 
     private Icon readIcons(){
         Icon icon = new Icon(new ArrayList<>()); //以ArrayList方式创建Icon表
+        File maintenanceImage = new File(dataFolder,"serviceModeIcon.png");
+        try{
+            icon.setMaintenanceImage(ImageIO.read(maintenanceImage));
+        }catch (IOException ignored){ }
+
         File[] files = dataFolder.listFiles();
         for (File file : files){
             if(file.getName().endsWith(".png")){

@@ -9,6 +9,7 @@ public class Firewall {
     @Getter
     private Map<String, Integer> requestMap = new HashMap<>(); //防御记录器
     private Config config;
+    private long lastUnbanIpTime = 0;
     public Firewall(Config config){
         this.config=config;
     }
@@ -29,6 +30,8 @@ public class Firewall {
     }
 
     public boolean isBlocked(String ip){
+        if((System.currentTimeMillis() - lastUnbanIpTime) > 120000)
+            requestMap.clear();
         if(requestMap.get(ip)>config.getRequestLimit())
             return true;
         return false;
