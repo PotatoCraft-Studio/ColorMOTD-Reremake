@@ -56,7 +56,6 @@ public class MotdListener implements Listener {
         String motd = config.isMaintenanceMode() ? plugin.getBungeePlaceHolder().applyPlaceHolder(config.getMaintenanceModeMotd(),ip) : plugin.getBungeePlaceHolder().applyPlaceHolder(config.randomMotd(),ip);
         BufferedImage favicon = plugin.favicons().chooseFavicon(config.isMaintenanceMode());
 
-        // TODO: placeholder
         BaseComponent[] components = TextComponent.fromLegacyText(plugin.getBungeePlaceHolder().applyPlaceHolder(motd,ip));
         res.setDescriptionComponent(components.length == 1 ? components[0] : new TextComponent(components));
         res.setFavicon(favicon == null ? null : faviconCache.getUnchecked(favicon));
