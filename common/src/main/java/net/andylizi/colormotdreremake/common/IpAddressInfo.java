@@ -16,10 +16,10 @@
  */
 package net.andylizi.colormotdreremake.common;
 
-public interface IPAddressInfo {
-    public String getIp();
-    public String getCountry();
-    public String getRegion();
-    public String getArea();
-    public String getIsp();
+public interface IpAddressInfo {
+    String getIp();
+    String getCountry();
+    String getRegion();
+    String getArea();
+    String getIsp();
 }
