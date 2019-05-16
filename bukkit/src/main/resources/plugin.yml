@@ -1,0 +1,8 @@
+name: ColorMOTD-Reremake
+version: ${project.version}
+main: net.andylizi.colormotdreremake.bukkit.BukkitMain
+authors: [Ghost_chu, andylizi]
+prefix: ColorMOTD
+load: STARTUP
+depend: [ProtocolLib]
+softdepend: [PlaceholderAPI]

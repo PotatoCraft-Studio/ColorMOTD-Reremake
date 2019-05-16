@@ -1,0 +1,25 @@
+### Maven
+target/
+dependency-reduced-pom.xml
+
+### JetBrains
+out/
+.idea/*
+!.idea/codeStyles/
+!.idea/copyright/
+!.idea/inspectionProfiles/
+*.iws
+*.iml
+*___jb_*___
+
+### NetBeans
+nbproject/
+build/
+dist/
+
+### Eclipse
+.metadata
+.settings/
+bin/
+tmp/
+local.properties
