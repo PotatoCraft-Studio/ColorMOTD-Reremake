@@ -29,13 +29,14 @@ import org.jetbrains.annotations.*;
 public final class LoginListener implements Listener {
     private final @NotNull BukkitMain plugin;
 
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLogin(PlayerLoginEvent event) {
         if (plugin.config().isMaintenanceMode()) {
             Player player = event.getPlayer();
             if (!player.isOp() && !player.hasPermission("colormotd.maintenance.join")) {
                 event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST,
-                        ChatColor.translateAlternateColorCodes('&', plugin.config().getMaintenanceModeKickMsg()));
+                        plugin.getBukkitPlaceHolder().applyPlaceHolder(plugin.config().getMaintenanceModeKickMsg(), event.getAddress().getHostAddress()));
             }
         }
     }

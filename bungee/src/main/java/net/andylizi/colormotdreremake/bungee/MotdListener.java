@@ -47,26 +47,26 @@ public class MotdListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onServerListPing(ProxyPingEvent event) {
         ServerPing res = event.getResponse();
-
         Config config = plugin.config();
-        String motd = config.isMaintenanceMode() ? config.getMaintenanceModeMotd() : config.randomMotd();
+        String ip = event.getConnection().getAddress().getHostString();
+        String motd = config.isMaintenanceMode() ? plugin.getBungeePlaceHolder().applyPlaceHolder(config.getMaintenanceModeMotd(),ip) : plugin.getBungeePlaceHolder().applyPlaceHolder(config.randomMotd(),ip);
         BufferedImage favicon = plugin.favicons().chooseFavicon(config.isMaintenanceMode());
 
         // TODO: placeholder
-        BaseComponent[] components = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', motd));
+        BaseComponent[] components = TextComponent.fromLegacyText(plugin.getBungeePlaceHolder().applyPlaceHolder(motd,ip));
         res.setDescriptionComponent(components.length == 1 ? components[0] : new TextComponent(components));
         res.setFavicon(favicon == null ? null : faviconCache.getUnchecked(favicon));
 
         if (!config.isShowPing()) {
-            String onlineMsg = config.randomOnlineMsg();
+            String onlineMsg = plugin.getBungeePlaceHolder().applyPlaceHolder(config.randomOnlineMsg(),ip);
             if (onlineMsg != null)
-                res.setVersion(new ServerPing.Protocol(ChatColor.translateAlternateColorCodes('&', onlineMsg), -1));
+                res.setVersion(new ServerPing.Protocol(plugin.getBungeePlaceHolder().applyPlaceHolder( onlineMsg,ip), -1));
         }
 
         List<String> players = config.getPlayers();
         if (players != null && !players.isEmpty()) {
             res.setPlayers(new ServerPing.Players(0, ProxyServer.getInstance().getOnlineCount(), config.getPlayers().stream()
-                    .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+                    .map(line -> plugin.getBungeePlaceHolder().applyPlaceHolder(line,ip))
                     .map(line -> new ServerPing.PlayerInfo(line, UUID.randomUUID())).toArray(ServerPing.PlayerInfo[]::new)));
         }
     }

@@ -16,15 +16,15 @@
  */
 package net.andylizi.colormotdreremake.common;
 
-import lombok.*;
-
 public class InternalPlaceHolder {
     Config config;
     IpAddressManager ipAddressManager;
+
     public InternalPlaceHolder(Config config){
         this.config = config;
         ipAddressManager = new IpAddressManager(config);
     }
+
     public String applyPlaceHolder(String text, String ip){
         //颜色处理需要各自的PlaceHolder里完成，内部类只负责处理变量
         IpAddressInfo ipAddressInfo = ipAddressManager.getIpInfomations(ip);

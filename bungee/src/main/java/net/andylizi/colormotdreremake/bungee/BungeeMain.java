@@ -16,21 +16,24 @@
  */
 package net.andylizi.colormotdreremake.bungee;
 
+import lombok.*;
 import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.ConfigManager;
 import net.andylizi.colormotdreremake.common.FaviconList;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
-
+@Getter
 public final class BungeeMain extends Plugin {
     private ConfigManager configManager;
-
+    private BungeePlaceHolder bungeePlaceHolder;
     @Override
     public void onEnable() {
         this.configManager = new ConfigManager(getDataFolder().toPath());
         this.configManager.saveDefaultResources();
         this.configManager.loadConfig();
         this.configManager.loadFavicons();
+
+        bungeePlaceHolder = new BungeePlaceHolder(config());
 
         PluginManager pm = getProxy().getPluginManager();
         pm.registerListener(this, new MotdListener(this));

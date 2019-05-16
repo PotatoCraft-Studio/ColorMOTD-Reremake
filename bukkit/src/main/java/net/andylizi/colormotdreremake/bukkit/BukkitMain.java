@@ -18,17 +18,19 @@ package net.andylizi.colormotdreremake.bukkit;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import lombok.*;
 import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.ConfigManager;
 import net.andylizi.colormotdreremake.common.FaviconList;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
+@Getter
 public final class BukkitMain extends JavaPlugin {
     private ConfigManager configManager;
     private ProtocolManager protocolManager;
-
+    private BukkitPlaceHolder bukkitPlaceHolder;
+    public static boolean usePlaceHolderAPI;
     @Override
     public void onEnable() {
         PluginManager pm = Bukkit.getPluginManager();
@@ -46,8 +48,13 @@ public final class BukkitMain extends JavaPlugin {
         this.configManager.loadConfig();
         this.configManager.loadFavicons();
 
+        bukkitPlaceHolder = new BukkitPlaceHolder(config());
+
         this.protocolManager.addPacketListener(new MotdListener(this));
         pm.registerEvents(new LoginListener(this), this);
+        if(Bukkit.getPluginManager().getPlugin("PlaceHolderAPI")!=null && config().isUsePlaceHolderAPI())
+            usePlaceHolderAPI = true;
+
     }
 
     @Override

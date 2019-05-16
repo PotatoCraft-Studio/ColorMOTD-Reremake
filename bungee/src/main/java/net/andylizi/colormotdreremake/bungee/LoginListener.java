@@ -34,8 +34,9 @@ public class LoginListener implements Listener {
         if (plugin.config().isMaintenanceMode()) {
             ProxiedPlayer player = event.getPlayer();
             if (!player.hasPermission("colormotd.maintenance.join")) {
-                player.disconnect(TextComponent.fromLegacyText(ChatColor
-                        .translateAlternateColorCodes('&', plugin.config().getMaintenanceModeKickMsg())));
+                player.disconnect(TextComponent.fromLegacyText(
+                        plugin.getBungeePlaceHolder().applyPlaceHolder(plugin.config().getMaintenanceModeKickMsg(), event.getPlayer().getAddress().getHostString())
+                ));
             }
         }
     }

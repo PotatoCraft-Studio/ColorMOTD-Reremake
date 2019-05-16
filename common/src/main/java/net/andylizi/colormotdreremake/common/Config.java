@@ -41,7 +41,7 @@ public class Config {
     private boolean emergencyMode;
     private int requestLimit;
     private @NotNull String ipProvider;
-
+    private int limitTime;
     public static Config createDefaultConfig() {
         return builder()
                 .motds(Arrays.asList(
@@ -63,12 +63,13 @@ public class Config {
                 .emergencyMode(false)
                 .requestLimit(15)
                 .ipProvider("taobao")
+                .limitTime(600000)
                 .build();
     }
 
     public Config(@NotNull List<String> motds, @Nullable List<String> onlineMsgs, @Nullable List<String> players,
                   @NotNull String maintenanceModeMotd, @NotNull String maintenanceModeKickMsg, @NotNull String tpsFormat,
-                  boolean usePlaceHolderAPI, boolean showPing, boolean maintenanceMode, boolean emergencyMode, int requestLimit,String ipProvider) {
+                  boolean usePlaceHolderAPI, boolean showPing, boolean maintenanceMode, boolean emergencyMode, int requestLimit,String ipProvider, int limitTime) {
         if (motds.isEmpty()) throw new IllegalArgumentException("motds cannot be empty");
 
         this.motds = new ArrayList<>(motds);
@@ -83,7 +84,7 @@ public class Config {
         this.emergencyMode = emergencyMode;
         this.requestLimit = requestLimit;
         this.ipProvider = ipProvider;
-
+        this.limitTime = 600000;
         if (requestLimit <= 0) throw new IllegalArgumentException("requestLimit");
     }
 

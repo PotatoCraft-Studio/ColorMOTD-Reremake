@@ -79,15 +79,17 @@ public class MotdListener implements PacketListener {
         }
 
         Config config = plugin.config();
-        String motd = config.isMaintenanceMode() ? config.getMaintenanceModeMotd() : config.randomMotd();
+        String ip = event.getPlayer().getAddress().getHostString();
+        String motd = config.isMaintenanceMode() ? plugin.getBukkitPlaceHolder().applyPlaceHolder(config.getMaintenanceModeMotd(),ip) : config.randomMotd();
         BufferedImage favicon = plugin.favicons().chooseFavicon(config.isMaintenanceMode());
 
+
         // TODO: placeholder
-        status.setMotD(WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', motd)));
+        status.setMotD(WrappedChatComponent.fromText(plugin.getBukkitPlaceHolder().applyPlaceHolder(motd, ip)));
         status.setFavicon(favicon == null ? null : faviconCache.getUnchecked(favicon));
 
         if (!config.isShowPing()) {
-            String onlineMsg = config.randomOnlineMsg();
+            String onlineMsg = plugin.getBukkitPlaceHolder().applyPlaceHolder(config.randomOnlineMsg(),ip);
             if (onlineMsg != null) {
                 status.setVersionProtocol(-1);
                 status.setVersionName(ChatColor.translateAlternateColorCodes('&', onlineMsg));
@@ -97,7 +99,7 @@ public class MotdListener implements PacketListener {
         List<String> players = config.getPlayers();
         if (players != null && !players.isEmpty()) {
             status.setPlayers(config.getPlayers().stream()
-                    .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+                    .map(line -> plugin.getBukkitPlaceHolder().applyPlaceHolder(line,ip))
                     .map(line -> new WrappedGameProfile(UUID.randomUUID(), line))
                     .collect(CommonUtil.toImmutableList()));
             status.setPlayersVisible(true);
