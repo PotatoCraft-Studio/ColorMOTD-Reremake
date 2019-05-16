@@ -22,6 +22,7 @@ import lombok.*;
 import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.ConfigManager;
 import net.andylizi.colormotdreremake.common.FaviconList;
+import net.andylizi.colormotdreremake.common.Firewall;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +32,7 @@ public final class BukkitMain extends JavaPlugin {
     private ProtocolManager protocolManager;
     private BukkitPlaceHolder bukkitPlaceHolder;
     public static boolean usePlaceHolderAPI;
+    private Firewall firewall;
     @Override
     public void onEnable() {
         PluginManager pm = Bukkit.getPluginManager();
@@ -47,7 +49,7 @@ public final class BukkitMain extends JavaPlugin {
         this.configManager.saveDefaultResources();
         this.configManager.loadConfig();
         this.configManager.loadFavicons();
-
+        firewall = new Firewall(config());
         bukkitPlaceHolder = new BukkitPlaceHolder(config());
 
         this.protocolManager.addPacketListener(new MotdListener(this));

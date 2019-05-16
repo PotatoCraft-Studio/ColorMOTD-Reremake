@@ -36,6 +36,7 @@ import com.google.common.cache.LoadingCache;
 import lombok.*;
 import net.andylizi.colormotdreremake.common.CommonUtil;
 import net.andylizi.colormotdreremake.common.Config;
+import net.andylizi.colormotdreremake.common.Firewall;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.*;
 
@@ -70,7 +71,10 @@ public class MotdListener implements PacketListener {
     @Override
     public void onPacketSending(PacketEvent event) {
         if (event.isCancelled()) return;
+        String ip = event.getPlayer().getAddress().getHostString();
 
+        //Firewall check
+        if (!plugin.getFirewall().canFlushMotd(ip)) return;
         WrappedServerPing status = null;
         try {
             status = event.getPacket().getServerPings().getValues().get(0);
@@ -79,12 +83,9 @@ public class MotdListener implements PacketListener {
         }
 
         Config config = plugin.config();
-        String ip = event.getPlayer().getAddress().getHostString();
         String motd = config.isMaintenanceMode() ? plugin.getBukkitPlaceHolder().applyPlaceHolder(config.getMaintenanceModeMotd(),ip) : config.randomMotd();
         BufferedImage favicon = plugin.favicons().chooseFavicon(config.isMaintenanceMode());
 
-
-        // TODO: placeholder
         status.setMotD(WrappedChatComponent.fromText(plugin.getBukkitPlaceHolder().applyPlaceHolder(motd, ip)));
         status.setFavicon(favicon == null ? null : faviconCache.getUnchecked(favicon));
 
@@ -113,6 +114,8 @@ public class MotdListener implements PacketListener {
         if (!plugin.config().isShowPing()) {
             event.setCancelled(true);
         }
+        if(plugin.getFirewall().isBlocked(event.getPlayer().getAddress().getHostString()))
+            event.setCancelled(true);
     }
 
     private static CompressedImage _fromPng(RenderedImage img) {

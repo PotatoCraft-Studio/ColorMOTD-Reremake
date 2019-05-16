@@ -46,9 +46,13 @@ public class MotdListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onServerListPing(ProxyPingEvent event) {
+        String ip = event.getConnection().getAddress().getHostString();
+
+        if(!plugin.getFirewall().canFlushMotd(ip)) //刷MOTD检查
+            return;
+
         ServerPing res = event.getResponse();
         Config config = plugin.config();
-        String ip = event.getConnection().getAddress().getHostString();
         String motd = config.isMaintenanceMode() ? plugin.getBungeePlaceHolder().applyPlaceHolder(config.getMaintenanceModeMotd(),ip) : plugin.getBungeePlaceHolder().applyPlaceHolder(config.randomMotd(),ip);
         BufferedImage favicon = plugin.favicons().chooseFavicon(config.isMaintenanceMode());
 
