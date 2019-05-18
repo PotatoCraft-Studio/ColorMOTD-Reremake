@@ -39,20 +39,10 @@ public class BungeePlaceHolder {
     text = internalPlaceHolder.applyPlaceHolder(text, ip);
     text = text.replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getOnlineCount()));
     text = text.replaceAll("%maxplayer%", String.valueOf(ProxyServer.getInstance().getConfig().getPlayerLimit()));
-    text = text.replaceAll("%date%", getDate());
-    text = text.replaceAll("%time%", getTime());
+
 
     return text;
     }
-    public String getDate(){
-        Date now = new Date();
-        DateFormat d1 = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        return d1.format(now);
-    }
-    public String getTime(){
-        Date now = new Date();
-        DateFormat d1 = DateFormat.getTimeInstance(DateFormat.MEDIUM);
-        return d1.format(now);
-    }
+
 
 }

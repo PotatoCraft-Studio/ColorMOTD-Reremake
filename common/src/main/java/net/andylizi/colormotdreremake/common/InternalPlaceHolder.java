@@ -16,6 +16,10 @@
  */
 package net.andylizi.colormotdreremake.common;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class InternalPlaceHolder {
     Config config;
     IpAddressManager ipAddressManager;
@@ -34,7 +38,19 @@ public class InternalPlaceHolder {
         text = text.replaceAll("%area%" , ipAddressInfo.getArea());
         text = text.replaceAll("%isp%", ipAddressInfo.getIsp());
         text = text.replaceAll("%timestamp%", String.valueOf(System.currentTimeMillis()));
+        text = text.replaceAll("%date%", getDate());
+        text = text.replaceAll("%time%", getTime());
         return text;
+    }
+    public String getDate(){
+        Date now = new Date();
+        DateFormat d1 = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.CHINESE);
+        return d1.format(now);
+    }
+    public String getTime(){
+        Date now = new Date();
+        DateFormat d1 = DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.CHINESE);
+        return d1.format(now);
     }
 
 }
