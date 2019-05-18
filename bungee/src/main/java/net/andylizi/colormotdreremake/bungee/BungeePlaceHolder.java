@@ -46,13 +46,11 @@ public class BungeePlaceHolder {
     }
     public String getDate(){
         Date now = new Date();
-        Calendar cal = Calendar.getInstance();
         DateFormat d1 = DateFormat.getDateInstance(DateFormat.MEDIUM);
         return d1.format(now);
     }
     public String getTime(){
         Date now = new Date();
-        Calendar cal = Calendar.getInstance();
         DateFormat d1 = DateFormat.getTimeInstance(DateFormat.MEDIUM);
         return d1.format(now);
     }
