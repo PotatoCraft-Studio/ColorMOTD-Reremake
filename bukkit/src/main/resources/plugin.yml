@@ -1,8 +1,20 @@
 name: ColorMOTD-Reremake
 version: ${project.version}
 main: net.andylizi.colormotdreremake.bukkit.BukkitMain
-authors: [Ghost_chu, andylizi]
+authors: [Ghost_chu, andylizi, Bukkit Commands]
 prefix: ColorMOTD
 load: STARTUP
 depend: [ProtocolLib]
 softdepend: [PlaceholderAPI]
+commands:
+    smode:
+        description: Toggle smode
+    emode:
+        description: Toggle emode
+    colormotd:
+        description: Main command
+permissions:
+    colormotd.admin:
+        default: op
+    colormotd.maintenance.join:
+        default: op

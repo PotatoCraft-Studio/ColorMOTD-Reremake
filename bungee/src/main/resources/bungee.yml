@@ -1,4 +1,5 @@
 name: ColorMOTD-Reremake
 version: ${project.version}
 main: net.andylizi.colormotdreremake.bungee.BungeeMain
-author: "Ghost_chu & andylizi"
+author: "Ghost_chu & andylizi & Bukkit Commons"
+
