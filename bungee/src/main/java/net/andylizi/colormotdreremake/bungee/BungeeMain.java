@@ -56,7 +56,7 @@ public final class BungeeMain extends Plugin {
                 if(strings.length<1){
                     sender.sendMessage(new TextComponent(prefix+"支持的子命令: smode emode reload"));
                 }
-                if(sender.hasPermission("colormotd.admin")){
+                if(!sender.hasPermission("colormotd.admin")){
                     sender.sendMessage(new TextComponent(prefix+"权限不足"));
                 }
                 if(strings[0].equals("smode")){

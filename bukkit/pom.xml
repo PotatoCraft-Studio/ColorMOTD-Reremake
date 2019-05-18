@@ -12,7 +12,6 @@
     <artifactId>colormotd-reremake-bukkit</artifactId>
     <packaging>jar</packaging>
     <name>ColorMOTD-Reremake-Bukkit</name>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

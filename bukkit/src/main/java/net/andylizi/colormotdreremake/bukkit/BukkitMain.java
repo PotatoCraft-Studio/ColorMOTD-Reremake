@@ -96,7 +96,7 @@ public final class BukkitMain extends JavaPlugin {
         }
         if(!command.getName().equals("colormotd"))
             return false;
-        if(sender.hasPermission("colormotd.admin")) {
+        if(!sender.hasPermission("colormotd.admin")) {
             sender.sendMessage(prefix + "权限不足");
             return true;
         }
