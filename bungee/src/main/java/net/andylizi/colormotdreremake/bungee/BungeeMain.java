@@ -23,6 +23,8 @@ import net.andylizi.colormotdreremake.common.FaviconList;
 import net.andylizi.colormotdreremake.common.Firewall;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
+import org.bstats.bungeecord.Metrics;
+
 @Getter
 public final class BungeeMain extends Plugin {
     private ConfigManager configManager;
@@ -41,6 +43,7 @@ public final class BungeeMain extends Plugin {
         PluginManager pm = getProxy().getPluginManager();
         pm.registerListener(this, new MotdListener(this));
         pm.registerListener(this, new LoginListener(this));
+        Metrics metrics = new Metrics(this);
     }
 
     public ConfigManager configManager() {

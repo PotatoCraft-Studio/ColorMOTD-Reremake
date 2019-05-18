@@ -23,6 +23,7 @@ import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.ConfigManager;
 import net.andylizi.colormotdreremake.common.FaviconList;
 import net.andylizi.colormotdreremake.common.Firewall;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,7 +57,7 @@ public final class BukkitMain extends JavaPlugin {
         pm.registerEvents(new LoginListener(this), this);
         if(Bukkit.getPluginManager().getPlugin("PlaceHolderAPI")!=null && config().isUsePlaceHolderAPI())
             usePlaceHolderAPI = true;
-
+        Metrics metrics = new Metrics(this);
     }
 
     @Override
