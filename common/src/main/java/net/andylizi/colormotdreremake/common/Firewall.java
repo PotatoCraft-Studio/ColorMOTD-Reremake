@@ -27,9 +27,23 @@ public class Firewall {
     public Firewall(Config config){
         this.config = config;
     }
+
     public boolean canFlushMotd(String ip){
-        if(isBlocked(ip))
+        if(!firewallMap.containsKey(ip)) {
+            firewallMap.put(ip, 1); //初始化变量
+            return true;
+        }
+
+        //IP已存在
+
+        if(lastClear > config.getLimitTime()) { //清理列表
+            firewallMap.clear();
+            lastClear = System.currentTimeMillis();
+        }
+
+        if(firewallMap.get(ip) > config.getRequestLimit()) //检查是否被屏蔽
             return false;
+
         firewallMap.put(ip, firewallMap.get(ip)+1);
         return true;
     }

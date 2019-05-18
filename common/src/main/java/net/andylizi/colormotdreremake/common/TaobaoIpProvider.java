@@ -58,12 +58,12 @@ public class TaobaoIpProvider implements IpAddressInfo {
         private String city;
         private String county;
         private String isp;
-        private int country_id;
-        private int area_id;
-        private int region_id;
-        private int city_id;
-        private int county_id;
-        private int isp_id;
+        private String country_id;
+        private String area_id;
+        private String region_id;
+        private String city_id;
+        private String county_id;
+        private String isp_id;
     }
 }
 

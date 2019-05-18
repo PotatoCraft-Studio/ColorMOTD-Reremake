@@ -45,11 +45,12 @@ public class Config {
     public static Config createDefaultConfig() {
         return builder()
                 .motds(Arrays.asList(
-                        "&b欢迎来到我们服务器~这是第&e1&b条随机消息\n&d现在时间: &e%DATE% %TIME%",
-                        "&b欢迎来到我们服务器~这是第&e2&b条随机消息\n&d在线人数: &e%ONLINE%"))
+                        "&b欢迎来到我们服务器~这是第&e1&b条随机消息\n&d现在时间: &e%date% %time%",
+                        "&b欢迎来到我们服务器~这是第&e2&b条随机消息\n&d在线人数: &e%online%",
+                        "&b欢迎来到我们服务器~这是第&e1&b条随机消息\n&d您的网络运营商: &e%isp%"))
                 .onlineMsgs(Arrays.asList(
-                        "&2*&6查看服务器信息&2*      &a在线人数: &b%ONLINE%&d/&2%MAXPLAYER%",
-                        "&2*&6查看服务器信息&2*      &a现在时间: &e%DATE% %TIME%"))
+                        "&2*&6查看服务器信息&2*      &a在线人数: &b%online%&d/&2%maxplayer%",
+                        "&2*&6查看服务器信息&2*      &a现在时间: &e%date% %time%"))
                 .players(Arrays.asList(
                         "&b啦啦啦&c啦啦啦&d啦啦啦", "&b啦啦啦&c啦啦啦&d啦啦啦",
                         "&b啦啦啦&c啦啦啦&d啦啦啦", "&b啦啦啦&c啦啦啦&d啦啦啦",

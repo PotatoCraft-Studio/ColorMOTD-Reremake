@@ -40,10 +40,12 @@ public class IpAddressManager {
         IpAddressInfo info = null;
         switch (config.getIpProvider()){
             case "taobao":
+                String json = HttpUtils.doGet(taobaoProvider+ip);
                 try{
-                    info = gson.fromJson(HttpUtils.doGet(taobaoProvider+ip), TaobaoIpProvider.class);
+                    info = gson.fromJson(json, TaobaoIpProvider.class);
                 }catch (JsonSyntaxException ex){
                     //Ignore
+                    System.out.println("Json Syntax Exception founded: "+json+"\n"+ex.getMessage());
                 }
                 break;
         }

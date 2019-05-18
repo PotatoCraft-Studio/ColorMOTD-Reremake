@@ -36,10 +36,9 @@ public class BukkitPlaceHolder {
     public String applyPlaceHolder(String text, String ip){
         text = ChatColor.translateAlternateColorCodes('&', text);
         text = internalPlaceHolder.applyPlaceHolder(text, ip);
-        text = text.replaceAll("%online%", ""); //TODO Online stats
+        text = text.replaceAll("%online%", String.valueOf(ReflectFactory.getPlayers().length));
         text = text.replaceAll("%maxonline%", String.valueOf(Bukkit.getMaxPlayers()));
         text = text.replaceAll("%playedbefore%", String.valueOf(Bukkit.getOfflinePlayers().length));
-        text = text.replaceAll("%tps%", "");//TODO tps
         if(BukkitMain.usePlaceHolderAPI)
             text = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(UUID.fromString("OfflinePlayer:ColorMOTD")), text);
         return text;
