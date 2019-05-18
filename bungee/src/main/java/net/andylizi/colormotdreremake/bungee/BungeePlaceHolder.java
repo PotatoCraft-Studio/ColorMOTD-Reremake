@@ -16,6 +16,10 @@
  */
 package net.andylizi.colormotdreremake.bungee;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.InternalPlaceHolder;
 import net.md_5.bungee.api.ChatColor;
@@ -34,7 +38,23 @@ public class BungeePlaceHolder {
     text = ChatColor.translateAlternateColorCodes('&', text);
     text = internalPlaceHolder.applyPlaceHolder(text, ip);
     text = text.replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getOnlineCount()));
-    text = text.replaceAll("%maxonline%", String.valueOf(ProxyServer.getInstance().getConfig().getPlayerLimit()));
+    text = text.replaceAll("%maxplayer%", String.valueOf(ProxyServer.getInstance().getConfig().getPlayerLimit()));
+    text = text.replaceAll("%date%", getDate());
+    text = text.replaceAll("%time%", getTime());
+
     return text;
     }
+    public String getDate(){
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        DateFormat d1 = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        return d1.format(now);
+    }
+    public String getTime(){
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        DateFormat d1 = DateFormat.getTimeInstance(DateFormat.MEDIUM);
+        return d1.format(now);
+    }
+
 }
