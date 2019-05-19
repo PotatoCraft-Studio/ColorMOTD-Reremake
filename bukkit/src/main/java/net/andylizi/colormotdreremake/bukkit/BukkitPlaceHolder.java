@@ -40,7 +40,7 @@ public class BukkitPlaceHolder {
         text = text.replaceAll("%maxplayer%", String.valueOf(Bukkit.getMaxPlayers()));
         text = text.replaceAll("%playedbefore%", String.valueOf(Bukkit.getOfflinePlayers().length));
         if(BukkitMain.usePlaceHolderAPI)
-            text = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(UUID.fromString("OfflinePlayer:ColorMOTD")), text);
+            text = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer("ColorMOTD"), text);
         return text;
 
     }
