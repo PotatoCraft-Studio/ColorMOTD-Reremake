@@ -28,7 +28,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
-import org.bstats.bungeecord.Metrics;
 
 @Getter
 public final class BungeeMain extends Plugin {
@@ -49,7 +48,7 @@ public final class BungeeMain extends Plugin {
         PluginManager pm = getProxy().getPluginManager();
         pm.registerListener(this, new MotdListener(this));
         pm.registerListener(this, new LoginListener(this));
-        Metrics metrics = new Metrics(this);
+        MetricsLite metrics = new MetricsLite(this);
         Command cmdMain = new Command("colormotd","colormotd.admin","") {
             @Override
             public void execute(CommandSender sender, String[] strings) {
