@@ -24,86 +24,45 @@ import java.nio.charset.StandardCharsets;
 public class HttpUtils {
     private static final int TIMEOUT_IN_MILLIONS = 5000;
 
-    public interface CallBack
-    {
+    public interface CallBack {
         void onRequestComplete(String result);
     }
 
-
-    /**
-     * 异步的Get请求
-     *
-     * @param urlStr
-     * @param callBack
-     */
-    public static void doGetAsyn(final String urlStr, final CallBack callBack)
-    {
-        new Thread()
-        {
-            public void run()
-            {
-                try
-                {
-                    String result = doGet(urlStr);
-                    if (callBack != null)
-                    {
-                        callBack.onRequestComplete(result);
-                    }
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
+    public static void doGetAsyn(final String urlStr, final CallBack callBack) {
+        new Thread(() -> {
+            try {
+                String result = doGet(urlStr);
+                if (callBack != null) {
+                    callBack.onRequestComplete(result);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            };
-        }.start();
+        }).start();
     }
 
-    /**
-     * 异步的Post请求
-     * @param urlStr
-     * @param params
-     * @param callBack
-     * @throws Exception
-     */
     public static void doPostAsyn(final String urlStr, final String params,
-                                  final CallBack callBack) throws Exception
-    {
-        new Thread()
-        {
-            public void run()
-            {
-                try
-                {
-                    String result = doPost(urlStr, params);
-                    if (callBack != null)
-                    {
-                        callBack.onRequestComplete(result);
-                    }
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
+                                  final CallBack callBack) {
+        new Thread(() -> {
+            try {
+                String result = doPost(urlStr, params);
+                if (callBack != null) {
+                    callBack.onRequestComplete(result);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            };
-        }.start();
+        }).start();
 
     }
-
-    /**
-     * Get请求，获得返回数据
-     *
-     * @param urlStr
-     * @return
-     * @throws Exception
-     */
-    public static String doGet(String urlStr)
-    {
+    public static String doGet(String urlStr) {
         URL url = null;
         HttpURLConnection conn = null;
         InputStream is = null;
         ByteArrayOutputStream baos = null;
-        try
-        {
+        try {
             url = new URL(urlStr);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(TIMEOUT_IN_MILLIONS);
@@ -111,67 +70,51 @@ public class HttpUtils {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
-            if (conn.getResponseCode() == 200)
-            {
+            if (conn.getResponseCode() == 200) {
                 is = conn.getInputStream();
                 baos = new ByteArrayOutputStream();
                 int len = -1;
                 byte[] buf = new byte[128];
 
-                while ((len = is.read(buf)) != -1)
-                {
+                while ((len = is.read(buf)) != -1) {
                     baos.write(buf, 0, len);
                 }
                 baos.flush();
+                conn.disconnect();
                 return baos.toString();
-            } else
-            {
-                throw new RuntimeException(" responseCode is not 200 ... ");
+            } else if (conn.getResponseCode() == 404) {
+                //Shit
+                return null;
+            }else{
+                throw new RuntimeException("ResponseCode is "+conn.getResponseCode());
             }
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
+
             e.printStackTrace();
-        } finally
-        {
-            try
-            {
+        } finally {
+            try {
                 if (is != null)
                     is.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
+                //ignore
             }
-            try
-            {
+            try {
                 if (baos != null)
                     baos.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
+                //ignore
             }
-            conn.disconnect();
+
         }
-
-        return null ;
-
+        return null;
     }
 
-    /**
-     * 向指定 URL 发送POST方法的请求
-     *
-     * @param url
-     *            发送请求的 URL
-     * @param param
-     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @return 所代表远程资源的响应结果
-     * @throws Exception
-     */
-    public static String doPost(String url, String param)
-    {
+    public static String doPost(String url, String param) {
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
-        try
-        {
+        try {
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
             HttpURLConnection conn = (HttpURLConnection) realUrl
@@ -190,8 +133,7 @@ public class HttpUtils {
             conn.setReadTimeout(TIMEOUT_IN_MILLIONS);
             conn.setConnectTimeout(TIMEOUT_IN_MILLIONS);
 
-            if (param != null && !param.trim().isEmpty())
-            {
+            if (param != null && !param.trim().isEmpty()) {
                 // 获取URLConnection对象对应的输出流
                 out = new PrintWriter(conn.getOutputStream());
                 // 发送请求参数
@@ -201,31 +143,24 @@ public class HttpUtils {
             }
             // 定义BufferedReader输入流来读取URL的响应
             in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
+                    new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
             String line;
-            while ((line = in.readLine()) != null)
-            {
+            while ((line = in.readLine()) != null) {
                 result += line;
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         // 使用finally块来关闭输出流、输入流
-        finally
-        {
-            try
-            {
-                if (out != null)
-                {
+        finally {
+            try {
+                if (out != null) {
                     out.close();
                 }
-                if (in != null)
-                {
+                if (in != null) {
                     in.close();
                 }
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
