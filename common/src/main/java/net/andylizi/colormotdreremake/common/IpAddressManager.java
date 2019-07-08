@@ -45,11 +45,12 @@ public class IpAddressManager {
                     info = gson.fromJson(json, TaobaoIpProvider.class);
                 }catch (JsonSyntaxException ex){
                     //Ignore
+                    info = TaobaoIpProvider.builder().code(404).data(TaobaoIpProvider.TaobaoIpData.builder().area("未知").city("未知").country("未知").ip(ip).region("未知").isp("未知").build()).build();
                     System.out.println("Json Syntax Exception founded: "+json+"\n"+ex.getMessage());
                 }
                 break;
         }
-        if(cacheMap.size() > 50)
+        if(cacheMap.size() > 3000)
             cacheMap.clear(); //清空缓存
         cacheMap.put(ip, info); //放置缓存
         return info;

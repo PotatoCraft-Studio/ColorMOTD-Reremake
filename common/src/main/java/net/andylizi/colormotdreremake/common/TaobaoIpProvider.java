@@ -20,6 +20,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 public class TaobaoIpProvider implements IpAddressInfo {
     int code;
     TaobaoIpData data;
@@ -50,6 +51,7 @@ public class TaobaoIpProvider implements IpAddressInfo {
     }
     @Getter
     @Setter
+    @Builder
     static class TaobaoIpData{
         private String ip;
         private String country;

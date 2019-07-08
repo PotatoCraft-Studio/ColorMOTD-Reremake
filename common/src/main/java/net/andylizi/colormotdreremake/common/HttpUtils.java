@@ -85,8 +85,6 @@ public class HttpUtils {
             } else if (conn.getResponseCode() == 404) {
                 //Shit
                 return null;
-            }else{
-                throw new RuntimeException("ResponseCode is "+conn.getResponseCode());
             }
 
         } catch (Exception e) {
