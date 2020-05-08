@@ -21,6 +21,7 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.comphenix.protocol.PacketType;
@@ -93,11 +94,9 @@ public class MotdListener implements PacketListener {
         status.setFavicon(favicon == null ? null : faviconCache.getUnchecked(favicon));
 
         if (!config.isShowPing()) {
-            String onlineMsg = plugin.getBukkitPlaceHolder().applyPlaceHolder(config.randomOnlineMsg(),ip);
-            if (onlineMsg != null) {
-                status.setVersionProtocol(-1);
-                status.setVersionName(ChatColor.translateAlternateColorCodes('&', onlineMsg));
-            }
+            String onlineMsg = plugin.getBukkitPlaceHolder().applyPlaceHolder(Objects.requireNonNull(config.randomOnlineMsg()),ip);
+            status.setVersionProtocol(-1);
+            status.setVersionName(ChatColor.translateAlternateColorCodes('&', onlineMsg));
         }
 
         List<String> players = config.getPlayers();
