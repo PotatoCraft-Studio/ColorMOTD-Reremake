@@ -114,8 +114,9 @@ public class MotdListener implements PacketListener {
         if (!plugin.config().isShowPing()) {
             event.setCancelled(true);
         }
-        if(plugin.getFirewall().isBlocked(event.getPlayer().getAddress().getHostString()))
+        if(plugin.getFirewall().isBlocked(event.getPlayer().getAddress().getHostString(),false)) {
             event.setCancelled(true);
+        }
     }
 
     private static CompressedImage _fromPng(RenderedImage img) {
