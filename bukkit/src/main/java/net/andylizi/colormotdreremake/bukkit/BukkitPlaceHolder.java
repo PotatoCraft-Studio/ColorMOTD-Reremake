@@ -19,6 +19,7 @@ package net.andylizi.colormotdreremake.bukkit;
 import java.util.UUID;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderHook;
 import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.InternalPlaceHolder;
 import org.bukkit.Bukkit;
@@ -41,6 +42,7 @@ public class BukkitPlaceHolder {
         text = text.replaceAll("%playedbefore%", String.valueOf(Bukkit.getOfflinePlayers().length));
         if(BukkitMain.usePlaceHolderAPI)
             text = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer("ColorMOTD"), text);
+        PlaceholderHook
         return text;
 
     }

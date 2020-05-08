@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Bukkit Commons
+ * Copyright (C) 2020 Bukkit Commons
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -14,12 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.andylizi.colormotdreremake.common;
+package net.andylizi.colormotdreremake.common.ipadapter;
 
-public interface IpAddressInfo {
-    String getIp();
-    String getCountry();
-    String getRegion();
-    String getArea();
-    String getIsp();
+import lombok.*;
+import org.jetbrains.annotations.*;
+@AllArgsConstructor
+@Data
+public class IpResult {
+    @NotNull private String ip;
+    @NotNull private String country;
+    @NotNull private String region;
+    @NotNull private String isp;
 }

@@ -20,6 +20,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import net.andylizi.colormotdreremake.common.ipadapter.IpResult;
+
 public class InternalPlaceHolder {
     Config config;
     IpAddressManager ipAddressManager;
@@ -31,12 +33,11 @@ public class InternalPlaceHolder {
 
     public String applyPlaceHolder(String text, String ip){
         //颜色处理需要各自的PlaceHolder里完成，内部类只负责处理变量
-        IpAddressInfo ipAddressInfo = ipAddressManager.getIpInfomations(ip);
+        IpResult ipAddressInfo = ipAddressManager.getIpInfomations(ip);
         if(ipAddressInfo!=null){
             text = text.replaceAll("%ip%", ip);
             text = text.replaceAll("%country%", ipAddressInfo.getCountry());
             text = text.replaceAll("%region%" , ipAddressInfo.getRegion());
-            text = text.replaceAll("%area%" , ipAddressInfo.getArea());
             text = text.replaceAll("%isp%", ipAddressInfo.getIsp());
         }
         text = text.replaceAll("%timestamp%", String.valueOf(System.currentTimeMillis()));

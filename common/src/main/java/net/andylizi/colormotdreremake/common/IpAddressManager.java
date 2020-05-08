@@ -17,42 +17,43 @@
 package net.andylizi.colormotdreremake.common;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.*;
+import net.andylizi.colormotdreremake.common.ipadapter.IPAPIAdapter;
+import net.andylizi.colormotdreremake.common.ipadapter.IpAdapter;
+import net.andylizi.colormotdreremake.common.ipadapter.IpResult;
+import org.jetbrains.annotations.*;
+
 @Getter
 @Setter
 public class IpAddressManager {
-    private HashMap<String,IpAddressInfo> cacheMap = new HashMap<>();
-    private Config config;
-    private Gson gson = new Gson();
-    final String taobaoProvider = "http://ip.taobao.com/service/getIpInfo.php?ip=";
+    private final Cache<String, IpResult> ipCaching =  CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.HOURS)
+            .maximumSize(500)
+            .build();
+    private final Config config;
+    private final Gson gson = new Gson();
+    private final IpAdapter adapter;
 
 
-    public IpAddressManager(Config config){
+    public IpAddressManager(@NotNull Config config){
         this.config = config;
+        switch (config.getIpProvider()){ //暂时仅IPAPI可用
+            default:
+                adapter = new IPAPIAdapter();
+        }
     }
 
-    public IpAddressInfo getIpInfomations(String ip){
-        if(cacheMap.containsKey(ip))
-            return cacheMap.get(ip); //返回缓存数据
-        IpAddressInfo info = null;
-        switch (config.getIpProvider()){
-            case "taobao":
-                String json = HttpUtils.doGet(taobaoProvider+ip);
-                try{
-                    info = gson.fromJson(json, TaobaoIpProvider.class);
-                }catch (JsonSyntaxException ex){
-                    //Ignore
-                    info = TaobaoIpProvider.builder().code(404).data(TaobaoIpProvider.TaobaoIpData.builder().area("未知").city("未知").country("未知").ip(ip).region("未知").isp("未知").build()).build();
-                    System.out.println("Json Syntax Exception founded: "+json+"\n"+ex.getMessage());
-                }
-                break;
+    public IpResult getIpInfomations(@NotNull String ip){
+        IpResult info = ipCaching.getIfPresent(ip);
+        if(info != null){
+            return info;
         }
-        if(cacheMap.size() > 3000)
-            cacheMap.clear(); //清空缓存
-        cacheMap.put(ip, info); //放置缓存
+        info = adapter.search(ip);
         return info;
     }
 }

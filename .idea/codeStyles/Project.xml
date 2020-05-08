@@ -1,10 +1,7 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <option name="LINE_SEPARATOR" value="&#10;" />
-    <option name="REPLACE_INSTANCEOF" value="true" />
-    <option name="REPLACE_CAST" value="true" />
     <option name="RIGHT_MARGIN" value="130" />
-    <option name="JD_DO_NOT_WRAP_ONE_LINE_COMMENTS" value="true" />
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
     <HTMLCodeStyleSettings>
       <option name="HTML_ATTRIBUTE_WRAP" value="0" />
