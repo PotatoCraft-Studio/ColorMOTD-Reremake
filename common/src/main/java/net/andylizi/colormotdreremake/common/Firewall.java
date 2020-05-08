@@ -18,43 +18,35 @@ package net.andylizi.colormotdreremake.common;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import org.jetbrains.annotations.*;
 
 public class Firewall {
-    private final Map<String,Integer> firewallMap = new HashMap<>();
+        private final Cache<String, Integer> cache;
     private final Config config;
-    private long lastClear = System.currentTimeMillis();
 
     public Firewall(Config config){
         this.config = config;
+        this.cache = CacheBuilder.newBuilder()
+                .expireAfterWrite(config.getLimitTime(), TimeUnit.MILLISECONDS)
+        .build();
     }
 
-    public boolean canFlushMotd(String ip){
-        if(lastClear > config.getLimitTime()) { //清理列表
-            firewallMap.clear();
-            lastClear = System.currentTimeMillis();
-        }
-
-        if(!firewallMap.containsKey(ip)) {
-            firewallMap.put(ip, 1); //初始化变量
-            return true;
-        }
-
-        //IP已存在
-        if(firewallMap.get(ip) > config.getRequestLimit()) //检查是否被屏蔽
-            return false;
-
-        firewallMap.put(ip, firewallMap.get(ip)+1);
-        return true;
+    public boolean canFlushMotd(@NotNull String ip){
+        return !isBlocked(ip, true);
     }
-    public boolean isBlocked(String ip){
-        if(lastClear > config.getLimitTime()) {
-            firewallMap.clear();
-            lastClear = System.currentTimeMillis();
+    public boolean isBlocked(@NotNull String ip, boolean plus){
+        Integer count = cache.getIfPresent(ip);
+        if(count == null){
+            count = 0;
         }
-        if(!firewallMap.containsKey(ip))
-            return false;
-        if(firewallMap.get(ip) > config.getRequestLimit())
-            return true;
-        return false;
+        boolean result = count <= config.getRequestLimit();
+        if(plus){
+            cache.put(ip, ++count);
+        }
+        return result;
     }
 }

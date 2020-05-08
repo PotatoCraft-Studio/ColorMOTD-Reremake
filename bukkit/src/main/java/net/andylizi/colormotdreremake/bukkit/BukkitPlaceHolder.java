@@ -24,17 +24,18 @@ import net.andylizi.colormotdreremake.common.Config;
 import net.andylizi.colormotdreremake.common.InternalPlaceHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.*;
 
 public class BukkitPlaceHolder {
-    Config config;
-    InternalPlaceHolder internalPlaceHolder ;
+    private final Config config;
+    private final InternalPlaceHolder internalPlaceHolder ;
 
-    public BukkitPlaceHolder(Config config){
+    public BukkitPlaceHolder(@NotNull Config config){
         this.config = config;
         this.internalPlaceHolder = new InternalPlaceHolder(config);
     }
-
-    public String applyPlaceHolder(String text, String ip){
+    @NotNull
+    public String applyPlaceHolder(@NotNull String text, @NotNull String ip){
         text = ChatColor.translateAlternateColorCodes('&', text);
         text = internalPlaceHolder.applyPlaceHolder(text, ip);
         text = text.replaceAll("%online%", String.valueOf(ReflectFactory.getPlayers().length));

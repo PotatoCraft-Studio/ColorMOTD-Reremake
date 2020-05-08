@@ -47,7 +47,7 @@ public class MotdListener implements PacketListener {
     private final ListeningWhitelist sendingWhitelist;
     @Getter
     private final ListeningWhitelist receivingWhitelist;
-
+    @NotNull
     private final LoadingCache<RenderedImage, CompressedImage> faviconCache = CacheBuilder.newBuilder()
             .weakKeys()
             .build(CacheLoader.from(MotdListener::_fromPng));

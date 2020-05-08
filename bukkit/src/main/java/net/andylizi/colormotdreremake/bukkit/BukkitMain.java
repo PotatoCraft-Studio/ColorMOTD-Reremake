@@ -85,15 +85,15 @@ public final class BukkitMain extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(command.getName().equals("smode")){
+        if("smode".equals(command.getName())){
             Bukkit.dispatchCommand(sender, "colormotd smode");
             return true;
         }
-        if(command.getName().equals("emode")){
+        if("emode".equals(command.getName())){
             Bukkit.dispatchCommand(sender, "colormotd emode");
             return true;
         }
-        if(!command.getName().equals("colormotd"))
+        if(!"colormotd".equals(command.getName()))
             return false;
         if(!sender.hasPermission("colormotd.admin")) {
             sender.sendMessage(prefix + "权限不足");
@@ -104,12 +104,12 @@ public final class BukkitMain extends JavaPlugin {
             return true;
         }
 
-        if(args[0].equals("reload")){
+        if("reload".equals(args[0])){
             getConfigManager().loadConfig();
             sender.sendMessage(prefix+"重载完成");
             return true;
         }
-        if(args[0].equals("smode")){
+        if("smode".equals(args[0])){
             if(config().isMaintenanceMode()){
                 config().setMaintenanceMode(false);
                 getConfigManager().saveConfig();
@@ -125,7 +125,7 @@ public final class BukkitMain extends JavaPlugin {
             }
             return true;
         }
-        if(args[0].equals("emode")) {
+        if("emode".equals(args[0])) {
             if (config().isEmergencyMode()) {
                 config().setEmergencyMode(false);
                 getConfigManager().saveConfig();

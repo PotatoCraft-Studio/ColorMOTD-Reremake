@@ -30,7 +30,7 @@ public final class LoginListener implements Listener {
     private final @NotNull BukkitMain plugin;
 
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLogin(PlayerLoginEvent event) {
         if (plugin.config().isMaintenanceMode()) {
             Player player = event.getPlayer();

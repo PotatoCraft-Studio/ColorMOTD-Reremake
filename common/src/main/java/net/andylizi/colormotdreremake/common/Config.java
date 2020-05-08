@@ -70,7 +70,7 @@ public class Config {
 
     public Config(@NotNull List<String> motds, @Nullable List<String> onlineMsgs, @Nullable List<String> players,
                   @NotNull String maintenanceModeMotd, @NotNull String maintenanceModeKickMsg, @NotNull String tpsFormat,
-                  boolean usePlaceHolderAPI, boolean showPing, boolean maintenanceMode, boolean emergencyMode, int requestLimit,String ipProvider, int limitTime) {
+                  boolean usePlaceHolderAPI, boolean showPing, boolean maintenanceMode, boolean emergencyMode, int requestLimit, @NotNull String ipProvider, int limitTime) {
         if (motds.isEmpty()) throw new IllegalArgumentException("motds cannot be empty");
 
         this.motds = new ArrayList<>(motds);
