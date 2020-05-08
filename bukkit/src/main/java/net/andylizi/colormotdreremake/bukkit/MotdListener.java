@@ -74,7 +74,10 @@ public class MotdListener implements PacketListener {
         String ip = event.getPlayer().getAddress().getHostString();
 
         //Firewall check
-        if (!plugin.getFirewall().canFlushMotd(ip)) return;
+        if (!plugin.getFirewall().canFlushMotd(ip)) {
+            event.setCancelled(true);
+            return;
+        }
         WrappedServerPing status = null;
         try {
             status = event.getPacket().getServerPings().getValues().get(0);
